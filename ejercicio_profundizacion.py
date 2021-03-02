@@ -68,12 +68,14 @@ def fetch(id):
                 print(book.title)
 
         if id > 0:
-            query = session.query(Book).filter(Book.id == id).all()
-            if query is None:
-                print('El libro no esta en la base de datos')
+            book = session.query(Book).filter(Book.id == id).first()
+
+            if book is None:
+               print('El libro no esta en la base de datos')
+
             else:
-                for book in query:
-                    print(book)
+                print(book)
+            
     except:
         pass
     session.commit()
@@ -82,8 +84,8 @@ def search_author(book_title):
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    query = session.query(Autor).join(Book.author).filter(Book.title == book_title)
-    autor = query.first()
+    autor = session.query(Autor).join(Book.author).filter(Book.title == book_title).first()
+    
     return(autor)
 
 
@@ -98,11 +100,11 @@ if __name__ == "__main__":
   fill()
 
   # Leer filas
-  fetch(0)  # Ver todo el contenido de la DB
+  #fetch(0)  # Ver todo el contenido de la DB
   fetch(3)  # Ver la fila 3
   fetch(20)  # Ver la fila 20
 
   #Buscar autor
-  print(search_author('Relato de un naufrago'))
+  #print(search_author('Relato de un naufrago'))
 
 
